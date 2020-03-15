@@ -7,16 +7,10 @@ import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
+import java.util.Date;
+
 @RegisterRowMapper(EmployeeMapper.class)
 public interface EmployeeDao {
-
-    /**
-     * rs.getLong( "ID"),
-     * rs.getString( "FIRST_NAME"),
-     * rs.getString( "LAST_NAME"),
-     * rs.getString( "BIRTHDAY"),
-     * rs.getLong( "ADDRESS_ID")
-     */
 
     @SqlUpdate("CREATE TABLE \"EMPLOYEE\" ( \"ID\" bigint NOT NULL, \"FIRST_NAME\" character varying(255) NOT NULL, " +
             "\"LAST_NAME\" character varying(255) NOT NULL, \"BIRTHDAY\" date NOT NULL, " +
@@ -30,17 +24,16 @@ public interface EmployeeDao {
     @SqlUpdate("INSERT into PUBLIC.EMPLOYEE { ID, FIRST_NAME, LAST_NAME, BIRTHDAY, ADDRESS_ID } " +
             "VALUES ( :id, :firstName, :lastName, :birthday, :addressId)")
     void add(@Bind("id") Long id, @Bind("firstName") String firstName,
-             @Bind("lastName") String lastName, @Bind("birthday") String birthday,
+             @Bind("lastName") String lastName, @Bind("birthday") Date birthday,
              @Bind("addressId") Long addressId);
 
-    // TODO: finish from here
     @SqlQuery("SELECT * FROM PUBLIC.EMPLOYEE WHERE ID = :id")
     Employee findById(@Bind("id") Long id);
 
-    @SqlQuery("SELECT * FROM PUBLIC.ADDRESS WHERE COUNTRY = :country")
-    Employee findByCountry(@Bind("country") String country);
+    @SqlQuery("SELECT * FROM PUBLIC.EMPLOYEE WHERE LAST_NAME = :lastName")
+    Employee findByLastName(@Bind("lastName") String lastName);
 
-    @SqlQuery("DELETE * FROM PUBLIC.ADDRESS WHERE ID = :id")
+    @SqlQuery("DELETE * FROM PUBLIC.EMPLOYEE WHERE ID = :id")
     void remove(@Bind("id") Long id);
 
     /**

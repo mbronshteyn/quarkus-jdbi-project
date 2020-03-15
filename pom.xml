@@ -28,6 +28,18 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.4</version>
+      </dependency>
+<!--        <dependency>-->
+<!--          <groupId>org.jdbi</groupId>-->
+<!--          <artifactId>jdbi3-bom</artifactId>-->
+<!--          <type>pom</type>-->
+<!--          <version>3.12.1</version>-->
+<!--          <scope>import</scope>-->
+<!--        </dependency>-->
     </dependencies>
   </dependencyManagement>
   <dependencies>
