@@ -1,9 +1,16 @@
 package com.mbronshteyn.quarkus.domain;
 
+import com.mbronshteyn.quarkus.dao.UserDao;
+import com.mbronshteyn.quarkus.entity.Address;
+import com.mbronshteyn.quarkus.entity.EmplProj;
+import com.mbronshteyn.quarkus.entity.Employee;
+import com.mbronshteyn.quarkus.entity.Project;
 import com.mbronshteyn.quarkus.entity.User;
+import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class Application {
@@ -12,6 +19,7 @@ public class Application {
 
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test");
         jdbi.installPlugin(new SqlObjectPlugin());
+        Handle jdbiHandle = jdbi.open();
 
         // example of using withHandle
         List<User> users = jdbi.withHandle(handle -> {
@@ -38,53 +46,62 @@ public class Application {
                     .execute();
 
             // Easy mapping to any type
-            return handle.createQuery("SELECT * FROM user ORDER BY name")
+            List<User> userList = handle.createQuery("SELECT * FROM user ORDER BY name")
                     .mapToBean(User.class)
                     .list();
+
+            handle.close();
+
+            return userList;
         });
 
-        users.forEach(  System.out::println );
+        users.forEach(System.out::println);
+
+        User userDaoReturn =    jdbi.withExtension(UserDao.class, dao -> {
+            dao.update( new User( 1, "Jake") );
+            return dao.getById( 1L );
+        });
+
+        System.out.println( userDaoReturn );
 
 
-//        Address address = new Address();
-//        address.setId(1L);
-//        address.setCountry("DC");
-//        address.setCity("Gotham City");
-//        address.setStreet("Arkham street 1");
-//        address.setPostCode("12345");
-//
-//        Employee employee = new Employee();
-//        employee.setId(1L);
-//        employee.setFirstName("James");
-//        employee.setLastName("Gordon");
-//
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(1939, Calendar.MAY, 1);
-//
-//        employee.setBirthday(new java.sql.Date(calendar.getTime().getTime()));
-//        employee.setAddressId(address.getId());
-//
-//        Project project = new Project();
-//        project.setId(1L);
-//        project.setTitle("Gotham City Police Department Commissioner");
-//
-//        EmplProj emplProj = new EmplProj();
-//        emplProj.setEmployeeId(employee.getId());
-//        emplProj.setProjectId(project.getId());
-//
+        Address address = new Address();
+        address.setId(1L);
+        address.setCountry("DC");
+        address.setCity("Gotham City");
+        address.setStreet("Arkham street 1");
+        address.setPostCode("12345");
+
+        Employee employee = new Employee();
+        employee.setId(1L);
+        employee.setFirstName("James");
+        employee.setLastName("Gordon");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1939, Calendar.MAY, 1);
+
+        employee.setBirthday(new java.sql.Date(calendar.getTime().getTime()));
+        employee.setAddressId(address.getId());
+
+        Project project = new Project();
+        project.setId(1L);
+        project.setTitle("Gotham City Police Department Commissioner");
+
+        EmplProj emplProj = new EmplProj();
+        emplProj.setEmployeeId(employee.getId());
+        emplProj.setProjectId(project.getId());
+
 //        try {
-////            addressService.add(address);
-////            employeeService.add(employee);
-////            projectService.add(project);
-////            emplProjService.add(emplProj);
+//            // create table
+//            List<Address> addresses = jdbi.withExtension(AddressDao.class, dao -> {
+//                dao.createAddressTable();
+//                dao.add(1L, "USA", "San Diego", "1234 Street", "92000");
+//                return dao.findAll();
+//            });
 //
-//            List<Address> addressList = addressService.getAll();
-//            List<Employee> employeeList = employeeService.getAll();
-//            for (Employee e : employeeList) {
-//                System.out.println(e);
-//            }
+//            addresses.forEach( System.out::println );
 //
-//        } catch (SQLException e) {
+//        } catch ( Exception e ) {
 //            e.printStackTrace();
 //        }
     }

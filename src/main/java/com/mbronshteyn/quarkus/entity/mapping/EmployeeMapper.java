@@ -15,7 +15,7 @@ public class EmployeeMapper implements RowMapper<Employee> {
                 rs.getLong("ID"),
                 rs.getString("FIRST_NAME"),
                 rs.getString("LAST_NAME"),
-                rs.getString("BIRTHDAY"),
+                rs.getDate("BIRTHDAY"),
                 rs.getLong("ADDRESS_ID")
         );
     }
