@@ -1,5 +1,8 @@
 package com.mbronshteyn.quarkus;
 
+import com.google.common.flogger.FluentLogger;
+import com.mbronshteyn.quarkus.entity.Fruit;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,6 +19,8 @@ import java.util.Set;
 @Consumes(MediaType.APPLICATION_JSON)
 public class FruitResource {
 
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
     private Set<Fruit> fruits = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
     public FruitResource() {
@@ -25,6 +30,7 @@ public class FruitResource {
 
     @GET
     public Set<Fruit> list() {
+        logger.atInfo().log( "Fruits: " + fruits );
         return fruits;
     }
 
