@@ -16,8 +16,18 @@ public class FruitService {
     private Set<Fruit> fruits = Sets.newLinkedHashSet();
 
     public FruitService() {
-        fruits.add(new Fruit("Apple", "Winter fruit"));
-        fruits.add(new Fruit("Pineapple", "Tropical fruit"));
+        Fruit apple = Fruit.builder()
+                .name("Apple ")
+                .description("Winter Fruit")
+                .build();
+
+        Fruit pineapple = Fruit.builder()
+                .name("Pineapple")
+                .description("Tropical fruit")
+                .build();
+
+        fruits.add(apple);
+        fruits.add(pineapple);
     }
 
     public Set<Fruit> list() {
