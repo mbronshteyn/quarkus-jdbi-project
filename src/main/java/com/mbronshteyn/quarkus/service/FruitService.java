@@ -1,56 +1,44 @@
-package com.mbronshteyn.quarkus.controller;
+package com.mbronshteyn.quarkus.service;
 
+import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
 import com.mbronshteyn.quarkus.entity.Fruit;
-import com.mbronshteyn.quarkus.service.FruitService;
 
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-@Path("/fruits")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-public class FruitResource {
-
-    @Inject
-    FruitService service;
+@ApplicationScoped
+public class FruitService {
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private Set<Fruit> fruits = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
-
-    public FruitResource() {
+    // TODO: refactor to use DB shortly
+    private Set<Fruit> fruits = Sets.newLinkedHashSet();
+    public FruitService() {
         fruits.add(new Fruit("Apple", "Winter fruit"));
         fruits.add(new Fruit("Pineapple", "Tropical fruit"));
     }
 
-    @GET
     public Set<Fruit> list() {
-        return service.list();
+        logger.atInfo().log( "Fruits: " + fruits );
+        return fruits;
     }
 
-    @GET
-    @Path( "/one" )
     public Fruit one(){
         return new Fruit("Apple", "Winter fruit");
     }
 
-    @POST
     public Set<Fruit> add(Fruit fruit) {
         fruits.add(fruit);
         return fruits;
     }
 
-    @DELETE
     public Set<Fruit> delete(Fruit fruit) {
         fruits.removeIf(existingFruit -> existingFruit.name.contentEquals(fruit.name));
         return fruits;
