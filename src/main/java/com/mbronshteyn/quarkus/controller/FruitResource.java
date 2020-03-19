@@ -3,7 +3,9 @@ package com.mbronshteyn.quarkus.controller;
 import com.google.common.flogger.FluentLogger;
 import com.mbronshteyn.quarkus.entity.Fruit;
 import com.mbronshteyn.quarkus.service.FruitService;
+import lombok.Setter;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -14,6 +16,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
 
+@Setter
+@ApplicationScoped
 @Path("/fruits")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
