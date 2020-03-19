@@ -1,4 +1,4 @@
-package com.mbronshteyn.quarkus;
+package com.mbronshteyn.quarkus.controller;
 
 import com.google.common.flogger.FluentLogger;
 import com.mbronshteyn.quarkus.entity.Fruit;
