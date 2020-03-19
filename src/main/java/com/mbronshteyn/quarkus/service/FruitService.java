@@ -14,6 +14,7 @@ public class FruitService {
 
     // TODO: refactor to use DB shortly
     private Set<Fruit> fruits = Sets.newLinkedHashSet();
+
     public FruitService() {
         fruits.add(new Fruit("Apple", "Winter fruit"));
         fruits.add(new Fruit("Pineapple", "Tropical fruit"));
