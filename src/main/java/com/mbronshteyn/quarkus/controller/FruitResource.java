@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
+import java.util.UUID;
 
 @Setter
 @ApplicationScoped
@@ -38,7 +39,7 @@ public class FruitResource {
     @Path( "/one" )
     public Fruit one(){
         logger.atInfo().log("inside GET ONE method");
-        return new Fruit("Apple", "Winter fruit");
+        return new Fruit(UUID.randomUUID().toString(), "Apple", "Winter fruit");
     }
 
     @POST

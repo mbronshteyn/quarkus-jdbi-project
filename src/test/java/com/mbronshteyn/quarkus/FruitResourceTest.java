@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -36,9 +37,9 @@ public class FruitResourceTest {
     @BeforeEach
     public void setup() {
         // init data
-        fruitList.add(new Fruit("Apple", "Summer fruit"));
-        fruitList.add(new Fruit("Orange", "Winter fruit"));
-        fruitList.add(new Fruit("Pineapple", "Fall fruit"));
+        fruitList.add(new Fruit(UUID.randomUUID().toString(), "Apple", "Summer fruit"));
+        fruitList.add(new Fruit(UUID.randomUUID().toString(), "Orange", "Winter fruit"));
+        fruitList.add(new Fruit(UUID.randomUUID().toString(), "Pineapple", "Fall fruit"));
 
         // inject mocks
         resource.setService(fruitServiceMock);
@@ -61,7 +62,7 @@ public class FruitResourceTest {
     @Test
     public void testAdd() throws Exception {
 
-        Fruit pear = new Fruit("Pear", "Winter fruit");
+        Fruit pear = new Fruit(UUID.randomUUID().toString(), "Pear", "Winter fruit");
 
         // we don't need to pass actual Fruit, just an object
         Mockito.when(fruitServiceMock.add(pear))

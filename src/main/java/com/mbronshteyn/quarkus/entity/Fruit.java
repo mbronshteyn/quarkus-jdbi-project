@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Fruit {
+    public String uuid;
     public String name;
     public String description;
 }

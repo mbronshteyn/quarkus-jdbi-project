@@ -6,6 +6,7 @@ import com.mbronshteyn.quarkus.entity.Fruit;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Set;
+import java.util.UUID;
 
 @ApplicationScoped
 public class FruitService {
@@ -36,7 +37,7 @@ public class FruitService {
     }
 
     public Fruit one(){
-        return new Fruit("Apple", "Winter fruit");
+        return new Fruit(UUID.randomUUID().toString(), "Apple", "Winter fruit");
     }
 
     public Set<Fruit> add(Fruit fruit) {

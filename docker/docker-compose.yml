@@ -1,4 +1,8 @@
 # Use postgres/example user/password credentials
+
+# Connection string: jdbc:postgresql://0.0.0.0:5432/fruit
+# Database is configured to listen on all addresses
+
 version: '3.1'
 
 services:
@@ -6,11 +10,15 @@ services:
   db:
     image: postgres
     restart: always
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: example
     volumes:
       - ./data:/var/lib/postgresql/data
-
+  # Database admin which connects to Postgres
+  # You don't have to use it.  You can have your own SQL Client
+  # and use connection string above
   adminer:
     image: adminer
     restart: always
