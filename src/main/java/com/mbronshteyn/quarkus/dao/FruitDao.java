@@ -25,5 +25,5 @@ public interface FruitDao {
     List<Fruit> findAll();
 
     @SqlUpdate("DELETE * FROM FRUIT WHERE uuid = :uuid")
-    void remove(@Bind("uuid") String uuid);
+    void deleteById(@Bind("uuid") String uuid);
 }

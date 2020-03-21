@@ -1,25 +1,20 @@
 package com.mbronshteyn.quarkus.domain;
 
+import com.mbronshteyn.quarkus.bl.DatabaseConnector;
 import com.mbronshteyn.quarkus.dao.FruitDao;
 import com.mbronshteyn.quarkus.entity.Fruit;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
-import org.jdbi.v3.postgres.PostgresPlugin;
-import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
 import java.util.List;
 import java.util.UUID;
 
 public class ApplicationPostgres {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        // TODO: replace hardcoded credentials with config parameters
-        // TODO: refactor into singleton
-        Jdbi jdbi = Jdbi.create("jdbc:postgresql://0.0.0.0:5432/fruit",
-                "postgres", "example")
-                .installPlugin(new PostgresPlugin())
-                .installPlugin(new SqlObjectPlugin());
+        // Get a connection from the Connection Pool
+        Jdbi jdbi = new DatabaseConnector().getConnection();
 
         // example of using withHandle
         List<Fruit> fruits = jdbi.withHandle(handle -> {
