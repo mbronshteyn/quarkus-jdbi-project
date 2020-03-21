@@ -15,6 +15,7 @@ public class ApplicationPostgres {
     public static void main(String[] args) {
 
         // TODO: replace hardcoded credentials with config parameters
+        // TODO: refactor into singleton
         Jdbi jdbi = Jdbi.create("jdbc:postgresql://0.0.0.0:5432/fruit",
                 "postgres", "example")
                 .installPlugin(new PostgresPlugin())
