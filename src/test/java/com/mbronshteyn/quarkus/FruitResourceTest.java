@@ -11,12 +11,13 @@ import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -32,7 +33,7 @@ public class FruitResourceTest {
     // create mock service
     FruitService fruitServiceMock = Mockito.mock(FruitService.class);
 
-    Set<Fruit> fruitList = new HashSet<>();
+    List<Fruit> fruitList = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
@@ -46,7 +47,7 @@ public class FruitResourceTest {
     }
 
     @Test
-    public void testList() {
+    public void testList() throws Exception {
 
         Mockito.when(fruitServiceMock.list()).thenReturn(fruitList);
 
@@ -62,10 +63,10 @@ public class FruitResourceTest {
     @Test
     public void testAdd() throws Exception {
 
-        Fruit pear = new Fruit(UUID.randomUUID().toString(), "Pear", "Winter fruit");
+        Fruit pear = new Fruit("test", "Pear", "Winter fruit");
 
         // we don't need to pass actual Fruit, just an object
-        Mockito.when(fruitServiceMock.add(pear))
+        Mockito.when(fruitServiceMock.add(any(Fruit.class)))
                 .thenReturn(fruitList);
 
         given()

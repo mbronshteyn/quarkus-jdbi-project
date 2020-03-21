@@ -14,7 +14,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Setter
@@ -30,11 +30,12 @@ public class FruitResource {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     @GET
-    public Set<Fruit> list() {
+    public List<Fruit> list() throws Exception {
         logger.atInfo().log("inside GET method");
         return service.list();
     }
 
+    // TODO: add exception handler
     @GET
     @Path( "/one" )
     public Fruit one(){
@@ -43,12 +44,16 @@ public class FruitResource {
     }
 
     @POST
-    public Set<Fruit> add(Fruit fruit) {
+    public List<Fruit> add(Fruit fruit) throws Exception {
+        // allow client to pass uuid
+        if (fruit.getUuid() == null) {
+            fruit.setUuid(UUID.randomUUID().toString());
+        }
         return service.add(fruit);
     }
 
     @DELETE
-    public Set<Fruit> delete(Fruit fruit) {
+    public List<Fruit> delete(Fruit fruit) throws Exception {
         return service.delete(fruit);
     }
 }

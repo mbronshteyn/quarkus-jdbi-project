@@ -15,7 +15,7 @@ public interface FruitDao {
 
     @SqlUpdate("INSERT into FRUIT ( uuid, name, description ) " +
             "VALUES ( :uuid, :name, :description)")
-    void add(@Bind("uuid") String uuid, @Bind("name") String name, @Bind("description") String description);
+    int add(@Bind("uuid") String uuid, @Bind("name") String name, @Bind("description") String description);
 
     @SqlQuery("SELECT * FROM FRUIT WHERE uuid = :uuid")
     Fruit findById(@Bind("uuid") String uuid);
