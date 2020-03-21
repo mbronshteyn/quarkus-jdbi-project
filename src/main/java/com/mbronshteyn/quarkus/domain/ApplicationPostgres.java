@@ -2,6 +2,7 @@ package com.mbronshteyn.quarkus.domain;
 
 import com.mbronshteyn.quarkus.dao.FruitDao;
 import com.mbronshteyn.quarkus.entity.Fruit;
+import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
@@ -49,14 +50,16 @@ public class ApplicationPostgres {
             System.out.println("Fruits #1: " + fruit);
         });
 
-        fruits = jdbi.withExtension(FruitDao.class, dao -> {
-            dao.add(UUID.randomUUID().toString(), "Watermelon", "Not a fruit");
-            return dao.findAll();
-        });
+        // Using DAO interface
+        FruitDao fruitDao = jdbi.onDemand(FruitDao.class);
+        fruitDao.add(UUID.randomUUID().toString(), "Watermelon", "Not a fruit");
+        fruits = fruitDao.findAll();
 
         fruits.forEach(fruit -> {
             System.out.println("Fruits #2: " + fruit);
         });
+
+        jdbi.useHandle(Handle::close);
 
     }
 }
