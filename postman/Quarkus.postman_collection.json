@@ -6,25 +6,6 @@
 	},
 	"item": [
 		{
-			"name": "GET Fruits",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/fruits",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"fruits"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "POST Fruit",
 			"request": {
 				"method": "POST",
@@ -60,7 +41,26 @@
 			"response": []
 		},
 		{
-			"name": "Delete Fruit",
+			"name": "GET Fruits",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/fruits",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"fruits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Fruit by UUID",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -81,14 +81,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/fruits",
+					"raw": "http://localhost:8080/fruits/dba96c0d-4c81-4680-a256-da46a8725beb",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"fruits"
+						"fruits",
+						"dba96c0d-4c81-4680-a256-da46a8725beb"
 					]
 				}
 			},

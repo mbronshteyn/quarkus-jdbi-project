@@ -38,8 +38,8 @@ public class FruitResource {
 
     // TODO: add exception handler
     @GET
-    @Path("/{id}")
-    public Fruit findById(@PathParam("id") String uuid) throws Exception {
+    @Path("/{uuid}")
+    public Fruit findById(@PathParam("uuid") String uuid) throws Exception {
         logger.atInfo().log("inside GET ONE method");
         return service.findById(uuid);
     }
@@ -54,7 +54,8 @@ public class FruitResource {
     }
 
     @DELETE
-    public List<Fruit> delete(Fruit fruit) throws Exception {
-        return service.delete(fruit);
+    @Path("/{uuid}")
+    public List<Fruit> delete(@PathParam("uuid") String uuid) throws Exception {
+        return service.delete(uuid);
     }
 }

@@ -24,6 +24,6 @@ public interface FruitDao {
     @RegisterBeanMapper(Fruit.class)
     List<Fruit> findAll();
 
-    @SqlUpdate("DELETE * FROM FRUIT WHERE uuid = :uuid")
-    void deleteById(@Bind("uuid") String uuid);
+    @SqlUpdate("DELETE FROM FRUIT WHERE uuid = :uuid")
+    int deleteById(@Bind("uuid") String uuid);
 }
