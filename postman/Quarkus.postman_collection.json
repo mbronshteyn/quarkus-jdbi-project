@@ -95,12 +95,12 @@
 			"response": []
 		},
 		{
-			"name": "GET One Fruit",
+			"name": "GET by UUID",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/fruits/one",
+					"raw": "http://localhost:8080/fruits/f621aad8-17de-4f96-a851-05566c22a3c9",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -108,7 +108,7 @@
 					"port": "8080",
 					"path": [
 						"fruits",
-						"one"
+						"f621aad8-17de-4f96-a851-05566c22a3c9"
 					]
 				}
 			},
