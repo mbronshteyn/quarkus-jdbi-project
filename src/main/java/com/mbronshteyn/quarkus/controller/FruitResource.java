@@ -12,6 +12,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -37,10 +38,10 @@ public class FruitResource {
 
     // TODO: add exception handler
     @GET
-    @Path( "/one" )
-    public Fruit one(){
+    @Path("/{id}")
+    public Fruit findById(@PathParam("id") String uuid) throws Exception {
         logger.atInfo().log("inside GET ONE method");
-        return new Fruit(UUID.randomUUID().toString(), "Apple", "Winter fruit");
+        return service.findById(uuid);
     }
 
     @POST

@@ -10,7 +10,6 @@ import org.jdbi.v3.core.Jdbi;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @ApplicationScoped
 public class FruitService {
@@ -43,8 +42,10 @@ public class FruitService {
                 FruitDao::findAll);
     }
 
-    public Fruit findById(String uuid) {
-        return new Fruit(UUID.randomUUID().toString(), "Apple", "Winter fruit");
+    public Fruit findById(String uuid) throws Exception {
+        return databaseConnector.getConnection().withExtension(FruitDao.class, dao -> {
+            return dao.findById(uuid);
+        });
     }
 
     public List<Fruit> add(Fruit fruit) throws Exception {
