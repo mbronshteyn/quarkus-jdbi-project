@@ -19,6 +19,7 @@ services:
   # Database admin which connects to Postgres
   # You don't have to use it.  You can have your own SQL Client
   # and use connection string above
+  # connect to adminer on port 18080 as 8080 often taken
   adminer:
     image: adminer
     restart: always
