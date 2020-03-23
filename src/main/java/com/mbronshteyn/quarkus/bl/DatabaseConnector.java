@@ -25,7 +25,7 @@ public class DatabaseConnector {
         if (jdbi == null) {
             // make sure we don't have race condition here
             synchronized (Jdbi.class) {
-                // make sure there is no second thread was waiting on a lock
+                // make sure there was not a second thread waiting on a lock
                 if (jdbi == null) {
                     jdbi = Jdbi.create(PostgresDataSource.getDataSource())
                             .installPlugin(new SqlObjectPlugin())

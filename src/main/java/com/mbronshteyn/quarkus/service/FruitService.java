@@ -7,6 +7,7 @@ import com.mbronshteyn.quarkus.entity.Fruit;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @ApplicationScoped
@@ -23,11 +24,13 @@ public class FruitService {
         return DatabaseConnector.getJdbi().withExtension(FruitDao.class, dao -> {
             return dao.findById(uuid);
         });
+
     }
 
-    public List<Fruit> add(Fruit fruit) throws Exception {
+    public Integer add(Fruit fruit) throws Exception {
 
         logger.atInfo().log("Add Fruit: " + fruit);
+        Response response = null;
 
         Jdbi jdbi = DatabaseConnector.getJdbi();
 
@@ -38,42 +41,27 @@ public class FruitService {
          * extension, and closed before returning to the caller.
          */
         return jdbi.withExtension(FruitDao.class, dao -> {
-            int result = dao.add(fruit.getUuid(), fruit.getName(), fruit.getDescription());
-            // TODO: refactor to return an error object
-            logger.atInfo().log("Add result: " + result);
-            // TODO: return updated list for now
-            return dao.findAll();
+            return dao.add(fruit.getUuid(), fruit.getName(), fruit.getDescription());
         });
     }
 
-    public List<Fruit> update(Fruit fruit) throws Exception {
+    public Integer update(Fruit fruit) throws Exception {
 
         logger.atInfo().log("Update Fruit: " + fruit);
 
         Jdbi jdbi = DatabaseConnector.getJdbi();
         return jdbi.withExtension(FruitDao.class, dao -> {
-            int result = dao.update(fruit.getUuid(), fruit.getName(), fruit.getDescription());
-            // TODO: refactor to return an error object
-            logger.atInfo().log("Update result: " + result);
-            // TODO: return updated list for now
-            return dao.findAll();
+            return dao.update(fruit.getUuid(), fruit.getName(), fruit.getDescription());
         });
     }
 
-    public List<Fruit> delete(String uuid) throws Exception {
+    public Integer delete(String uuid) throws Exception {
 
         logger.atInfo().log("Delete Fruit by UUID: " + uuid);
 
         Jdbi jdbi = DatabaseConnector.getJdbi();
         return jdbi.withExtension(FruitDao.class, dao -> {
-            int result = dao.deleteById(uuid);
-            logger.atInfo().log("Delete by id result: " + result);
-            if (result != 1) {
-                // TODO: refactor to return an error object
-                logger.atSevere().log("Delete by UUID: Not found by uuid: " + uuid);
-            }
-            // TODO: return the updated list for now
-            return dao.findAll();
+            return dao.deleteById(uuid);
         });
     }
 }
