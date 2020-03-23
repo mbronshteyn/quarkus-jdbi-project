@@ -8,7 +8,6 @@ import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +15,6 @@ import java.util.List;
 public class FruitService {
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
-    @Inject
-    private DatabaseConnector databaseConnector;
 
     // TODO: refactor to use DB shortly
     private List<Fruit> fruits = new ArrayList<>();
@@ -40,12 +36,12 @@ public class FruitService {
 
     public List<Fruit> list() throws Exception {
         logger.atInfo().log("Fruits: " + fruits);
-        return databaseConnector.getConnection().withExtension(FruitDao.class,
+        return DatabaseConnector.getJdbi().withExtension(FruitDao.class,
                 FruitDao::findAll);
     }
 
     public Fruit findById(String uuid) throws Exception {
-        return databaseConnector.getConnection().withExtension(FruitDao.class, dao -> {
+        return DatabaseConnector.getJdbi().withExtension(FruitDao.class, dao -> {
             return dao.findById(uuid);
         });
     }
@@ -54,7 +50,7 @@ public class FruitService {
 
         logger.atInfo().log("Add Fruit: " + fruit);
 
-        Jdbi jdbi = databaseConnector.getConnection();
+        Jdbi jdbi = DatabaseConnector.getJdbi();
 
         /**
          * A convenience method which opens an extension of the given type,
@@ -77,7 +73,7 @@ public class FruitService {
 
         logger.atInfo().log("Update Fruit: " + fruit);
 
-        Jdbi jdbi = databaseConnector.getConnection();
+        Jdbi jdbi = DatabaseConnector.getJdbi();
         List<Fruit> fruits = jdbi.withExtension(FruitDao.class, dao -> {
             int result = dao.update(fruit.getUuid(), fruit.getName(), fruit.getDescription());
             // TODO: refactor to return an error object
@@ -95,7 +91,7 @@ public class FruitService {
 
         logger.atInfo().log("Delete Fruit by UUID: " + uuid);
 
-        Jdbi jdbi = databaseConnector.getConnection();
+        Jdbi jdbi = DatabaseConnector.getJdbi();
         List<Fruit> fruits = jdbi.withExtension(FruitDao.class, dao -> {
             int result = dao.deleteById(uuid);
             logger.atInfo().log("Delete by id result: " + result);

@@ -14,7 +14,7 @@ public class ApplicationPostgres {
     public static void main(String[] args) throws Exception {
 
         // Get a connection from the Connection Pool
-        Jdbi jdbi = new DatabaseConnector().getConnection();
+        Jdbi jdbi = DatabaseConnector.getJdbi();
 
         // example of using withHandle
         List<Fruit> fruits = jdbi.withHandle(handle -> {
