@@ -7,7 +7,11 @@ import com.mbronshteyn.quarkus.service.FruitService;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -21,29 +25,42 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-
 @QuarkusTest
+@ExtendWith(MockitoExtension.class)
 public class FruitResourceTest {
 
     @Inject
+    @InjectMocks
     FruitResource resource;
 
-    ObjectMapper objectMapper = new ObjectMapper();
-
     // create mock service
-    FruitService fruitServiceMock = Mockito.mock(FruitService.class);
+    @Mock
+    FruitService fruitServiceMock;
+
+    ObjectMapper objectMapper = new ObjectMapper();
 
     List<Fruit> fruitList = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
         // init data
-        fruitList.add(new Fruit(UUID.randomUUID().toString(), "Apple", "Summer fruit"));
-        fruitList.add(new Fruit(UUID.randomUUID().toString(), "Orange", "Winter fruit"));
-        fruitList.add(new Fruit(UUID.randomUUID().toString(), "Pineapple", "Fall fruit"));
+        fruitList.add(Fruit.builder()
+                .uuid(UUID.randomUUID().toString())
+                .name("Apple")
+                .description("Summer fruit")
+                .build());
 
-        // inject mocks
-        resource.setService(fruitServiceMock);
+        fruitList.add(Fruit.builder()
+                .uuid(UUID.randomUUID().toString())
+                .name("Orange")
+                .description("Winter fruit")
+                .build());
+
+        fruitList.add(Fruit.builder()
+                .uuid(UUID.randomUUID().toString())
+                .name("Pineapple")
+                .description("Fall fruit")
+                .build());
     }
 
     @Test
