@@ -28,6 +28,12 @@ import java.util.UUID;
 @Consumes(MediaType.APPLICATION_JSON)
 public class FruitResource {
 
+    public static final String SUCCESS = "Success";
+    public static final String NOT_UPDATED = "Not updated";
+    public static final String NOT_FOUND = "Not Found";
+    public static final String NOT_INSERTED = "Not Inserted";
+    public static final String NOT_DELETED = "Not deleted";
+
     @Inject
     FruitService service;
 
@@ -39,7 +45,7 @@ public class FruitResource {
         try {
             List<Fruit> fruits = service.list();
             ResponseObject responseObject = ResponseObject.builder()
-                    .msg("Success")
+                    .msg(SUCCESS)
                     .fruitList(fruits)
                     .build();
             return Response.ok().entity(responseObject).build();
@@ -57,12 +63,12 @@ public class FruitResource {
         if (fruit != null) {
             ResponseObject responseObject = ResponseObject.builder()
                     .fruit(fruit)
-                    .msg("Success")
+                    .msg(SUCCESS)
                     .build();
             return Response.ok().type(MediaType.APPLICATION_JSON).entity(responseObject).build();
         } else {
             ResponseObject responseObject = ResponseObject.builder()
-                    .msg("Not Found")
+                    .msg(NOT_FOUND)
                     .build();
             return Response.ok().status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(responseObject).build();
         }
@@ -82,12 +88,12 @@ public class FruitResource {
             Response.Status status;
             if (result == 1) {
                 responseObject = ResponseObject.builder()
-                        .msg("Success")
+                        .msg(SUCCESS)
                         .build();
                 status = Response.Status.OK;
             } else {
                 responseObject = ResponseObject.builder()
-                        .msg("Not Inserted")
+                        .msg(NOT_INSERTED)
                         .build();
                 status = Response.Status.NOT_MODIFIED;
             }
@@ -105,7 +111,7 @@ public class FruitResource {
         int result = service.update(fruit);
 
         ResponseObject responseObject = ResponseObject.builder()
-                .msg(result == 1 ? "Success" : "Not updated")
+                .msg(result == 1 ? SUCCESS : NOT_UPDATED)
                 .build();
 
         return Response.ok()
@@ -119,7 +125,7 @@ public class FruitResource {
 
         int result = service.delete(uuid);
         ResponseObject responseObject = ResponseObject.builder()
-                .msg(result == 1 ? "Success" : "Not deleted")
+                .msg(result == 1 ? SUCCESS : NOT_DELETED)
                 .build();
 
         return Response.ok().entity(responseObject)
