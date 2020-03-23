@@ -24,6 +24,7 @@ public class PostgresDataSource {
         config.setJdbcUrl(getPropertyValue("DB_URL"));
         config.setUsername(getPropertyValue("DB_USER_NAME"));
         config.setPassword(getPropertyValue("DB_PASSWORD"));
+        config.setMaximumPoolSize(10);
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
