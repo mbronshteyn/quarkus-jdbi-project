@@ -8,6 +8,7 @@ import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,8 @@ public class FruitService {
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private DatabaseConnector databaseConnector = new DatabaseConnector();
+    @Inject
+    private DatabaseConnector databaseConnector;
 
     // TODO: refactor to use DB shortly
     private List<Fruit> fruits = new ArrayList<>();

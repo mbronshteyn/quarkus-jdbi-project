@@ -9,30 +9,37 @@ import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.postgresql.ds.PGConnectionPoolDataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+@ApplicationScoped
 public class DatabaseConnector {
 
-    static PGConnectionPoolDataSource ds = null;
+    static private PGConnectionPoolDataSource ds;
 
-    // TODO: revisit later
-    synchronized public Jdbi getConnection() throws Exception {
+    // TODO: find out how thread safe it is
+    private Jdbi jdbi;
 
-        if (ds == null) {
-            // create one
-            ds = new PGConnectionPoolDataSource();
-            ds.setUrl(getPropertyValue("DB_URL"));
-            ds.setUser(getPropertyValue("DB_USER_NAME"));
-            ds.setPassword(getPropertyValue("DB_PASSWORD"));
-        }
+    public DatabaseConnector() throws Exception {
+        ds = new PGConnectionPoolDataSource();
+        ds.setUrl(getPropertyValue("DB_URL"));
+        ds.setUser(getPropertyValue("DB_USER_NAME"));
+        ds.setPassword(getPropertyValue("DB_PASSWORD"));
 
-        return Jdbi.create(ds.getConnection())
+        jdbi = Jdbi.create(ds.getConnection())
                 .installPlugin(new PostgresPlugin())
                 .installPlugin(new SqlObjectPlugin());
     }
 
+    // TODO: revisit later
+    public Jdbi getConnection() throws Exception {
+        return jdbi;
+    }
+
+    // TODO: find out if there is a way to use it
+    // and minimize setup
     public Jdbi getHickariCP() {
         PGSimpleDataSource ds = new PGSimpleDataSource();
         ds.setLoadBalanceHosts(true);
