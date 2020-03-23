@@ -66,6 +66,24 @@ public class FruitService {
         return fruits;
     }
 
+    public List<Fruit> update(Fruit fruit) throws Exception {
+
+        logger.atInfo().log("Update Fruit: " + fruit);
+
+        Jdbi jdbi = databaseConnector.getConnection();
+        List<Fruit> fruits = jdbi.withExtension(FruitDao.class, dao -> {
+            int result = dao.update(fruit.getUuid(), fruit.getName(), fruit.getDescription());
+            // TODO: refactor to return an error object
+            logger.atInfo().log("Update result: " + result);
+            // TODO: return updated list for now
+            return dao.findAll();
+        });
+
+        jdbi.useHandle(Handle::close);
+
+        return fruits;
+    }
+
     public List<Fruit> delete(String uuid) throws Exception {
 
         logger.atInfo().log("Delete Fruit by UUID: " + uuid);

@@ -11,6 +11,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -51,6 +52,11 @@ public class FruitResource {
             fruit.setUuid(UUID.randomUUID().toString());
         }
         return service.add(fruit);
+    }
+
+    @PUT
+    public List<Fruit> update(Fruit fruit) throws Exception {
+        return service.update(fruit);
     }
 
     @DELETE

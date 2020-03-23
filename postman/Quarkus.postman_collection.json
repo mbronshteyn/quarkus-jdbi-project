@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "POST Fruit",
+			"name": "POST Fruit ( ADD )",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -20,6 +20,41 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"description\": \"Good fruit\",\n  \"name\": \"Orange\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/fruits",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"fruits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Fruit ( UPDATE )",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"uuid\": \"f621aad8-17de-4f96-a851-05566c22a3c9\",\n  \"description\": \"Very Good fruit\",\n  \"name\": \"Apple\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
