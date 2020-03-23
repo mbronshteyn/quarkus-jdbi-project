@@ -54,7 +54,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"uuid\": \"f621aad8-17de-4f96-a851-05566c22a3c9\",\n  \"description\": \"Very Good fruit\",\n  \"name\": \"Apple\"\n}",
+					"raw": "{\n  \"uuid\": \"a9a94618-d1f1-4952-ab8d-d9f42b941d94\",\n  \"description\": \"Very Good fruit\",\n  \"name\": \"Apple\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,7 +116,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/fruits/dba96c0d-4c81-4680-a256-da46a8725beb",
+					"raw": "http://localhost:8080/fruits/d1f997e3-7bec-4951-b6e6-8f585f0bdcf0",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -124,7 +124,7 @@
 					"port": "8080",
 					"path": [
 						"fruits",
-						"dba96c0d-4c81-4680-a256-da46a8725beb"
+						"d1f997e3-7bec-4951-b6e6-8f585f0bdcf0"
 					]
 				}
 			},
@@ -136,7 +136,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/fruits/f621aad8-17de-4f96-a851-05566c22a3c9",
+					"raw": "http://localhost:8080/fruits/a9a94618-d1f1-4952-ab8d-d9f42b941d94",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -144,7 +144,7 @@
 					"port": "8080",
 					"path": [
 						"fruits",
-						"f621aad8-17de-4f96-a851-05566c22a3c9"
+						"a9a94618-d1f1-4952-ab8d-d9f42b941d94"
 					]
 				}
 			},
