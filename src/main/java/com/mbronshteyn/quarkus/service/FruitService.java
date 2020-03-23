@@ -55,6 +55,13 @@ public class FruitService {
         logger.atInfo().log("Add Fruit: " + fruit);
 
         Jdbi jdbi = databaseConnector.getConnection();
+
+        /**
+         * A convenience method which opens an extension of the given type,
+         * yields it to a callback, and returns the result of the callback.
+         * A handle is opened if needed by the
+         * extension, and closed before returning to the caller.
+         */
         List<Fruit> fruits = jdbi.withExtension(FruitDao.class, dao -> {
             int result = dao.add(fruit.getUuid(), fruit.getName(), fruit.getDescription());
             // TODO: refactor to return an error object
@@ -62,8 +69,6 @@ public class FruitService {
             // TODO: return updated list for now
             return dao.findAll();
         });
-
-        jdbi.useHandle(Handle::close);
 
         return fruits;
     }

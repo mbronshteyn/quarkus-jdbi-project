@@ -19,7 +19,13 @@ public class DatabaseConnector {
 
     static private PGConnectionPoolDataSource ds;
 
-    // TODO: find out how thread safe it is
+    /**
+     * Jdbi instances are thread-safe and do not own any database resources.
+     * <p>
+     * Typically applications create a single, shared Jdbi instance,
+     * and set up any common configuration there.
+     * See Configuration for more details.
+     */
     private Jdbi jdbi;
 
     public DatabaseConnector() throws Exception {
@@ -28,6 +34,7 @@ public class DatabaseConnector {
         ds.setUser(getPropertyValue("DB_USER_NAME"));
         ds.setPassword(getPropertyValue("DB_PASSWORD"));
 
+        // TODO: find out if this is actually pooled
         jdbi = Jdbi.create(ds.getConnection())
                 .installPlugin(new PostgresPlugin())
                 .installPlugin(new SqlObjectPlugin());
