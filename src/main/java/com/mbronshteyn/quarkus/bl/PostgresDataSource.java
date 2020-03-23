@@ -10,6 +10,13 @@ import java.util.Properties;
 
 public class PostgresDataSource {
 
+    /**
+     * HikariCP. HikariCP is a very fast lightweight Java connection pool.
+     * The API and overall codebase are relatively small (a good thing) and highly optimized.
+     * It also does not cut corners for performance like many other
+     * Java connection pool implementations.
+     * The Wiki is highly informative and dives really deep
+     */
     private static HikariConfig config = new HikariConfig();
     private static DataSource ds;
 
