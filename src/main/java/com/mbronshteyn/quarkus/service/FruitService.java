@@ -37,15 +37,13 @@ public class FruitService {
          * A handle is opened if needed by the
          * extension, and closed before returning to the caller.
          */
-        List<Fruit> fruits = jdbi.withExtension(FruitDao.class, dao -> {
+        return jdbi.withExtension(FruitDao.class, dao -> {
             int result = dao.add(fruit.getUuid(), fruit.getName(), fruit.getDescription());
             // TODO: refactor to return an error object
             logger.atInfo().log("Add result: " + result);
             // TODO: return updated list for now
             return dao.findAll();
         });
-
-        return fruits;
     }
 
     public List<Fruit> update(Fruit fruit) throws Exception {
@@ -53,15 +51,13 @@ public class FruitService {
         logger.atInfo().log("Update Fruit: " + fruit);
 
         Jdbi jdbi = DatabaseConnector.getJdbi();
-        List<Fruit> fruits = jdbi.withExtension(FruitDao.class, dao -> {
+        return jdbi.withExtension(FruitDao.class, dao -> {
             int result = dao.update(fruit.getUuid(), fruit.getName(), fruit.getDescription());
             // TODO: refactor to return an error object
             logger.atInfo().log("Update result: " + result);
             // TODO: return updated list for now
             return dao.findAll();
         });
-
-        return fruits;
     }
 
     public List<Fruit> delete(String uuid) throws Exception {
@@ -69,7 +65,7 @@ public class FruitService {
         logger.atInfo().log("Delete Fruit by UUID: " + uuid);
 
         Jdbi jdbi = DatabaseConnector.getJdbi();
-        List<Fruit> fruits = jdbi.withExtension(FruitDao.class, dao -> {
+        return jdbi.withExtension(FruitDao.class, dao -> {
             int result = dao.deleteById(uuid);
             logger.atInfo().log("Delete by id result: " + result);
             if (result != 1) {
@@ -79,7 +75,5 @@ public class FruitService {
             // TODO: return the updated list for now
             return dao.findAll();
         });
-
-        return fruits;
     }
 }
