@@ -91,20 +91,17 @@ public class FruitResource {
             int result = service.add(fruit);
 
             ResponseObject responseObject;
-            Response.Status status;
             if (result == 1) {
                 responseObject = ResponseObject.builder()
                         .msg(SUCCESS)
                         .build();
-                status = Response.Status.OK;
             } else {
                 responseObject = ResponseObject.builder()
                         .msg(NOT_INSERTED)
                         .build();
-                status = Response.Status.NOT_MODIFIED;
             }
 
-            return Response.ok().status(status).entity(responseObject).build();
+            return Response.ok().entity(responseObject).build();
 
         } catch (Exception e) {
             return Response.serverError()

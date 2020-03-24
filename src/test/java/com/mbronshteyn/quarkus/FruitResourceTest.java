@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -82,7 +84,7 @@ public class FruitResourceTest {
                 .when().get("/fruits")
                 .then()
                 .statusCode(200)
-                .body("fruitList.size()", is(3))
+                .body("fruitList.size()", is(fruitList.size()))
                 .body("msg", is("Success"));
 
         verify(fruitServiceMock, times(1)).list();
@@ -95,31 +97,81 @@ public class FruitResourceTest {
                 .statusCode(500);
     }
 
-//    @Test
-//    public void testAdd() throws Exception {
-//
-//        Fruit pear = new Fruit("test", "Pear", "Winter fruit");
-//
-//        ResponseObject responseObject = responseObject = ResponseObject.builder()
-//                .msg( "Success" )
-//                .build();
-//
-//        Response response = Response.ok().status( Response.Status.OK ).entity( responseObject ).build();
-//
-//        // we don't need to pass actual Fruit, just an object
-//        Mockito.when(fruitServiceMock.add(any(Fruit.class)))
-//                .thenReturn( 1 );
-//
-//        given()
-//                .body(objectMapper.writeValueAsString(pear))
-//                .header("Content-Type", MediaType.APPLICATION_JSON)
-//                .when()
-//                .post("/fruits")
-//                .then()
-//                .statusCode(200)
-//                .body("$.size()", is(fruitList.size()));
-//
-//        verify(fruitServiceMock, times(1)).add(pear);
-//    }
+    @Test
+    public void testAdd() throws Exception {
+
+        // ****************  verify we don't need to pass uuid from client
+        Fruit pear = Fruit.builder()
+                .name("Pear")
+                .description("Winter fruit")
+                .build();
+
+        // Normal use case - add successful
+        // uuid will be assigned, thus we just need to use any( class )
+        Mockito.when(fruitServiceMock.add(any(Fruit.class)))
+                .thenReturn(1);
+
+        given()
+                .body(objectMapper.writeValueAsString(pear))
+                .header("Content-Type", MediaType.APPLICATION_JSON)
+                .when()
+                .post("/fruits")
+                .then()
+                .statusCode(200)
+                .body("msg", is(FruitResource.SUCCESS));
+
+        verify(fruitServiceMock, times(1)).add(any(Fruit.class));
+        Mockito.reset(fruitServiceMock);
+
+        // *****************      verify we can pass uuid from client
+        pear = Fruit.builder()
+                .uuid("test")
+                .name("Pear")
+                .description("Winter fruit")
+                .build();
+
+        // Normal use case - add successful
+        Mockito.when(fruitServiceMock.add(pear))
+                .thenReturn(1);
+
+        given()
+                .body(objectMapper.writeValueAsString(pear))
+                .header("Content-Type", MediaType.APPLICATION_JSON)
+                .when()
+                .post("/fruits")
+                .then()
+                .statusCode(200)
+                .body("msg", is(FruitResource.SUCCESS));
+
+        verify(fruitServiceMock, times(1)).add(pear);
+        Mockito.reset(fruitServiceMock);
+
+        // ****************** Error use case - add failed
+        Mockito.when(fruitServiceMock.add(pear))
+                .thenReturn(0);
+
+        given()
+                .body(objectMapper.writeValueAsString(pear))
+                .header("Content-Type", MediaType.APPLICATION_JSON)
+                .when()
+                .post("/fruits")
+                .then()
+                .statusCode(200)
+                .body("msg", is(FruitResource.NOT_INSERTED));
+
+        verify(fruitServiceMock, times(1)).add(pear);
+
+        // ***************** Test Exception
+        Mockito.reset(fruitServiceMock);
+        Mockito.when(fruitServiceMock.add(any(Fruit.class))).thenThrow(new Exception());
+
+        given()
+                .body(objectMapper.writeValueAsString(pear))
+                .header("Content-Type", MediaType.APPLICATION_JSON)
+                .when()
+                .post("/fruits")
+                .then()
+                .statusCode(500);
+    }
 }
 
