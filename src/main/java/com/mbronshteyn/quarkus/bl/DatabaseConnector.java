@@ -20,7 +20,7 @@ public class DatabaseConnector {
     }
 
     public static Jdbi getJdbi() throws Exception {
-        // TODO: monitor if we hvae connection problem again
+        // TODO: monitor if we have connection problem again
         return Jdbi.create(PostgresDataSource.getDataSource())
                 .installPlugin(new SqlObjectPlugin())
                 .installPlugin(new PostgresPlugin());
