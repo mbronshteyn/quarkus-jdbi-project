@@ -4,17 +4,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mbronshteyn.quarkus.controller.FruitResource;
 import com.mbronshteyn.quarkus.entity.Fruit;
 import com.mbronshteyn.quarkus.service.FruitService;
+import com.mbronshteyn.quarkus.util.ResponseObject;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @QuarkusTest
 @ExtendWith(MockitoExtension.class)
@@ -53,20 +62,38 @@ public class FruitResourceTest {
                 .description("Fall fruit")
                 .build());
     }
-// TODO: refactor later to use Response object
-//    @Test
-//    public void testList() throws Exception {
-//
-//        Mockito.when(fruitServiceMock.list()).thenReturn(fruitList);
-//
-//        given()
-//                .when().get("/fruits")
-//                .then()
-//                .statusCode(200)
-//                .body("$.size()", is(fruitList.size()));
-//
-//        verify(fruitServiceMock, times(1)).list();
-//    }
+
+    @Test
+    public void testList() throws Exception {
+
+        // Test success
+        ResponseObject responseObject = ResponseObject.builder()
+                .msg(FruitResource.SUCCESS)
+                .fruitList(fruitList)
+                .build();
+
+        Response response = Response.ok()
+                .entity(responseObject)
+                .build();
+
+        Mockito.when(fruitServiceMock.list()).thenReturn(fruitList);
+
+        given()
+                .when().get("/fruits")
+                .then()
+                .statusCode(200)
+                .body("fruitList.size()", is(3))
+                .body("msg", is("Success"));
+
+        verify(fruitServiceMock, times(1)).list();
+
+        // Test Exception
+        Mockito.when(fruitServiceMock.list()).thenThrow(new Exception());
+        given()
+                .when().get("/fruits")
+                .then()
+                .statusCode(500);
+    }
 
 //    @Test
 //    public void testAdd() throws Exception {

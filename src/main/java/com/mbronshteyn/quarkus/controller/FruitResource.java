@@ -48,9 +48,10 @@ public class FruitResource {
                     .msg(SUCCESS)
                     .fruitList(fruits)
                     .build();
+
             return Response.ok().entity(responseObject).build();
         } catch (Exception e) {
-            return Response.ok().status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
