@@ -16,23 +16,13 @@ public class DatabaseConnector {
      * and set up any common configuration there.
      * See Configuration for more details.
      */
-    private static Jdbi jdbi;
-
     private DatabaseConnector() {
     }
 
     public static Jdbi getJdbi() throws Exception {
-        if (jdbi == null) {
-            // make sure we don't have race condition here
-            synchronized (Jdbi.class) {
-                // make sure there was not a second thread waiting on a lock
-                if (jdbi == null) {
-                    jdbi = Jdbi.create(PostgresDataSource.getDataSource())
-                            .installPlugin(new SqlObjectPlugin())
-                            .installPlugin(new PostgresPlugin());
-                }
-            }
-        }
-        return jdbi;
+        // TODO: monitor if we hvae connection problem again
+        return Jdbi.create(PostgresDataSource.getDataSource())
+                .installPlugin(new SqlObjectPlugin())
+                .installPlugin(new PostgresPlugin());
     }
 }
