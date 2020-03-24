@@ -160,9 +160,9 @@ public class FruitResourceTest {
                 .body("msg", is(FruitResource.NOT_INSERTED));
 
         verify(fruitServiceMock, times(1)).add(pear);
+        Mockito.reset(fruitServiceMock);
 
         // ***************** Test Exception
-        Mockito.reset(fruitServiceMock);
         Mockito.when(fruitServiceMock.add(any(Fruit.class))).thenThrow(new Exception());
 
         given()
@@ -172,6 +172,9 @@ public class FruitResourceTest {
                 .post("/fruits")
                 .then()
                 .statusCode(500);
+
+        verify(fruitServiceMock, times(1)).add(pear);
+        Mockito.reset(fruitServiceMock);
     }
 }
 
