@@ -17,17 +17,15 @@ public class PostgresDataSource {
      * Java connection pool implementations.
      * The Wiki is highly informative and dives really deep
      */
-    private static HikariConfig config = new HikariConfig();
-    private static DataSource ds;
+    HikariConfig config = new HikariConfig();
+    DataSource ds;
 
     /**
      * TODO: remove when no longer needed
      * DB_URL=jdbc:postgresql://0.0.0.0:5432/fruit
      * DB_USER_NAME=postgres
      * DB_PASSWORD=example
-     */
-
-    static {
+     */ {
         config.setJdbcUrl(getPropertyValue("DB_URL"));
         config.setUsername(getPropertyValue("DB_USER_NAME"));
         config.setPassword(getPropertyValue("DB_PASSWORD"));
@@ -35,13 +33,12 @@ public class PostgresDataSource {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setConnectionTimeout(10000);
+        config.setIdleTimeout(10000);
         ds = new HikariDataSource(config);
     }
 
-    private PostgresDataSource() {
-    }
-
-    public static DataSource getDataSource() {
+    public DataSource getDataSource() {
         return ds;
     }
 

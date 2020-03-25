@@ -4,9 +4,6 @@ import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
-import javax.enterprise.context.ApplicationScoped;
-
-@ApplicationScoped
 public class DatabaseConnector {
 
     /**
@@ -16,12 +13,9 @@ public class DatabaseConnector {
      * and set up any common configuration there.
      * See Configuration for more details.
      */
-    private DatabaseConnector() {
-    }
-
     public static Jdbi getJdbi() throws Exception {
         // TODO: monitor if we have connection problem again
-        return Jdbi.create(PostgresDataSource.getDataSource())
+        return Jdbi.create(new PostgresDataSource().getDataSource())
                 .installPlugin(new SqlObjectPlugin())
                 .installPlugin(new PostgresPlugin());
     }

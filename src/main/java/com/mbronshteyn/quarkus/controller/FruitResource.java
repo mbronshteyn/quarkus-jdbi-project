@@ -63,19 +63,21 @@ public class FruitResource {
             logger.atInfo().log("inside GET ONE method");
             Fruit fruit = service.findById(uuid);
             if (fruit != null) {
+                logger.atInfo().log("Found fruit", fruit);
                 ResponseObject responseObject = ResponseObject.builder()
                         .fruit(fruit)
                         .msg(SUCCESS)
                         .build();
                 return Response.ok().type(MediaType.APPLICATION_JSON).entity(responseObject).build();
             } else {
+                logger.atInfo().log("Not found fruit");
                 ResponseObject responseObject = ResponseObject.builder()
                         .msg(NOT_FOUND)
                         .build();
                 return Response.ok().status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(responseObject).build();
             }
         } catch (Exception e) {
-            logger.atSevere().log(e.getMessage());
+            logger.atSevere().log("GET by id", e);
             return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
