@@ -4,10 +4,10 @@ import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
+@ApplicationScoped
 public class DatabaseConnector {
 
     @Inject
