@@ -3,11 +3,13 @@ package com.mbronshteyn.quarkus.bl;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import javax.inject.Singleton;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+@Singleton
 public class PostgresDataSource {
 
     /**
@@ -29,7 +31,7 @@ public class PostgresDataSource {
         config.setJdbcUrl(getPropertyValue("DB_URL"));
         config.setUsername(getPropertyValue("DB_USER_NAME"));
         config.setPassword(getPropertyValue("DB_PASSWORD"));
-        config.setMaximumPoolSize(50);
+        config.setMaximumPoolSize(6);
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");

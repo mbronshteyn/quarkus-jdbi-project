@@ -7,20 +7,24 @@ import com.mbronshteyn.quarkus.entity.Fruit;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
 @ApplicationScoped
 public class FruitService {
 
+    @Inject
+    DatabaseConnector databaseConnector;
+
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     public List<Fruit> list() throws Exception {
-        return new DatabaseConnector().getJdbi().withExtension(FruitDao.class,
+        return databaseConnector.getJdbi().withExtension(FruitDao.class,
                 FruitDao::findAll);
     }
 
     public Fruit findById(String uuid) throws Exception {
-        return new DatabaseConnector().getJdbi().withExtension(FruitDao.class, dao -> {
+        return databaseConnector.getJdbi().withExtension(FruitDao.class, dao -> {
             return dao.findById(uuid);
         });
 
@@ -30,7 +34,7 @@ public class FruitService {
 
         logger.atInfo().log("Add Fruit: " + fruit);
 
-        Jdbi jdbi = new DatabaseConnector().getJdbi();
+        Jdbi jdbi = databaseConnector.getJdbi();
 
         /**
          * A convenience method which opens an extension of the given type,
@@ -47,7 +51,7 @@ public class FruitService {
 
         logger.atInfo().log("Update Fruit: " + fruit);
 
-        Jdbi jdbi = new DatabaseConnector().getJdbi();
+        Jdbi jdbi = databaseConnector.getJdbi();
         return jdbi.withExtension(FruitDao.class, dao -> {
             return dao.update(fruit.getUuid(), fruit.getName(), fruit.getDescription());
         });
@@ -57,7 +61,7 @@ public class FruitService {
 
         logger.atInfo().log("Delete Fruit by UUID: " + uuid);
 
-        Jdbi jdbi = new DatabaseConnector().getJdbi();
+        Jdbi jdbi = databaseConnector.getJdbi();
         return jdbi.withExtension(FruitDao.class, dao -> {
             return dao.deleteById(uuid);
         });

@@ -63,7 +63,7 @@ public class FruitResource {
             logger.atInfo().log("inside GET ONE method");
             Fruit fruit = service.findById(uuid);
             if (fruit != null) {
-                logger.atInfo().log("Found fruit", fruit);
+                logger.atInfo().log("Found fruit: %s", fruit);
                 ResponseObject responseObject = ResponseObject.builder()
                         .fruit(fruit)
                         .msg(SUCCESS)
