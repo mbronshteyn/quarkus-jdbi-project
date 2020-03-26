@@ -4,10 +4,10 @@ import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
-@ApplicationScoped
+@Singleton
 public class DatabaseConnector {
 
     @Inject
@@ -20,7 +20,7 @@ public class DatabaseConnector {
      * and set up any common configuration there.
      * See Configuration for more details.
      */
-    public Jdbi getJdbi() throws Exception {
+    public Jdbi getJdbi() {
         // TODO: monitor if we have connection problem again
         return Jdbi.create(postgresDataSource.getDataSource())
                 .installPlugin(new SqlObjectPlugin())

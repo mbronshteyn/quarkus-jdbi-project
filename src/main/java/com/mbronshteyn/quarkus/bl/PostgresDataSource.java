@@ -1,5 +1,6 @@
 package com.mbronshteyn.quarkus.bl;
 
+import com.google.common.flogger.FluentLogger;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -19,15 +20,12 @@ public class PostgresDataSource {
      * Java connection pool implementations.
      * The Wiki is highly informative and dives really deep
      */
-    HikariConfig config = new HikariConfig();
     DataSource ds;
 
-    /**
-     * TODO: remove when no longer needed
-     * DB_URL=jdbc:postgresql://0.0.0.0:5432/fruit
-     * DB_USER_NAME=postgres
-     * DB_PASSWORD=example
-     */ {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    public PostgresDataSource() {
+        HikariConfig config = new HikariConfig();
         config.setJdbcUrl(getPropertyValue("DB_URL"));
         config.setUsername(getPropertyValue("DB_USER_NAME"));
         config.setPassword(getPropertyValue("DB_PASSWORD"));
@@ -37,7 +35,11 @@ public class PostgresDataSource {
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         config.setConnectionTimeout(10000);
         config.setIdleTimeout(10000);
-        ds = new HikariDataSource(config);
+        try {
+            ds = new HikariDataSource(config);
+        } catch (Throwable th) {
+            logger.atSevere().log("init ds: %s", th);
+        }
     }
 
     public DataSource getDataSource() {
