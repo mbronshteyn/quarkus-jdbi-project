@@ -55,7 +55,7 @@ public class PostgresDataSource {
             propertyValue = properties.getProperty(propertyName);
         } catch (IOException e) {
             // use System.out.println for now
-            System.out.println(e);
+            logger.atSevere().log( "Error reading properties: %s", e );
         }
 
         return propertyValue;
