@@ -123,10 +123,10 @@
       <version>2.23.0</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
+    <!-- dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-agroal</artifactId>
-    </dependency>
+    </dependency -->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jdbc-postgresql</artifactId>
