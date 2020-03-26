@@ -4,10 +4,14 @@ import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-@ApplicationScoped
+@Singleton
 public class DatabaseConnector {
+
+    @Inject
+    PostgresDataSource postgresDataSource;
 
     /**
      * Jdbi instances are thread-safe and do not own any database resources.
@@ -16,12 +20,9 @@ public class DatabaseConnector {
      * and set up any common configuration there.
      * See Configuration for more details.
      */
-    private DatabaseConnector() {
-    }
-
-    public static Jdbi getJdbi() throws Exception {
+    public Jdbi getJdbi() {
         // TODO: monitor if we have connection problem again
-        return Jdbi.create(PostgresDataSource.getDataSource())
+        return Jdbi.create(postgresDataSource.getDataSource())
                 .installPlugin(new SqlObjectPlugin())
                 .installPlugin(new PostgresPlugin());
     }

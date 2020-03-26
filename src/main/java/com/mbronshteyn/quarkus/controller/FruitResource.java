@@ -60,22 +60,24 @@ public class FruitResource {
     @Path("/{uuid}")
     public Response findById(@PathParam("uuid") String uuid) {
         try {
-            logger.atInfo().log("inside GET ONE method");
+            logger.atInfo().log("inside findById method");
             Fruit fruit = service.findById(uuid);
             if (fruit != null) {
+                logger.atInfo().log("Found fruit: %s", fruit);
                 ResponseObject responseObject = ResponseObject.builder()
                         .fruit(fruit)
                         .msg(SUCCESS)
                         .build();
                 return Response.ok().type(MediaType.APPLICATION_JSON).entity(responseObject).build();
             } else {
+                logger.atInfo().log("Not found");
                 ResponseObject responseObject = ResponseObject.builder()
                         .msg(NOT_FOUND)
                         .build();
                 return Response.ok().status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(responseObject).build();
             }
         } catch (Exception e) {
-            logger.atSevere().log(e.getMessage());
+            logger.atSevere().log("GET by id %s", e);
             return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -104,6 +106,7 @@ public class FruitResource {
             return Response.ok().entity(responseObject).build();
 
         } catch (Exception e) {
+            logger.atSevere().log("POST: %s", e);
             return Response.serverError()
                     .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -122,6 +125,7 @@ public class FruitResource {
                     .entity(responseObject)
                     .build();
         } catch (Exception e) {
+            logger.atSevere().log("PUT: %s", e);
             return Response.serverError()
                     .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -139,6 +143,7 @@ public class FruitResource {
             return Response.ok().entity(responseObject)
                     .build();
         } catch (Exception e) {
+            logger.atSevere().log("DELETE: %s", e);
             return Response.serverError()
                     .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
