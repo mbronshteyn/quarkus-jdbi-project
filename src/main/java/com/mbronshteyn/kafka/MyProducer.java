@@ -1,7 +1,5 @@
 package com.mbronshteyn.kafka;
 
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -21,7 +19,7 @@ public class MyProducer {
         for (int i = 0; i < 100; i++) {
             producer.send(
                     new ProducerRecord<String, String>(
-                            "my-topic", "abc", Integer.toString(i)));
+                            "my-topic", Integer.toString(i), Integer.toString(i)));
         }
 
         producer.close();
