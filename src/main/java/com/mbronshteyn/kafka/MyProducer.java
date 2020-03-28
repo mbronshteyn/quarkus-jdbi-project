@@ -3,6 +3,7 @@ package com.mbronshteyn.kafka;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import reactor.core.publisher.Flux;
 
 import java.util.Properties;
 
@@ -13,14 +14,17 @@ public class MyProducer {
         props.put("acks", "all");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put( "enable.auto.commit", "true" );
+        props.put("enable.auto.commit", "true");
 
-        Producer<String, String> producer = new KafkaProducer(props);
-        for (int i = 0; i < 100; i++) {
-            producer.send(
-                    new ProducerRecord<String, String>(
-                            "my-topic", Integer.toString(i), Integer.toString(i)));
-        }
+        Producer<String, String> producer = new KafkaProducer<>(props);
+
+        Flux.range(0, 100)
+                .parallel()
+                .subscribe(i -> {
+                    producer.send(
+                            new ProducerRecord<String, String>(
+                                    "my-topic", "abc", Integer.toString(i)));
+                });
 
         producer.close();
     }
