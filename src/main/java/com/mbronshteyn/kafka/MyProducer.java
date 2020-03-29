@@ -4,6 +4,8 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Properties;
 
@@ -23,9 +25,21 @@ public class MyProducer {
                 .subscribe(i -> {
                     producer.send(
                             new ProducerRecord<String, String>(
-                                    "my-topic", "abc", Integer.toString(i)));
+                                    "my-topic", Integer.toString(i), Integer.toString(i)));
                 });
 
-        producer.close();
+        Mono.just("message from mono")
+                .publishOn(Schedulers.single())
+                .subscribe(message -> {
+                    System.out.println("Sending " + message);
+                    producer.send(
+                            new ProducerRecord<String, String>(
+                                    "my-topic", "xyz", message));
+                }, error -> {
+                }, () -> {
+                    producer.close();
+                });
+
+        System.out.println("Before or after");
     }
 }
