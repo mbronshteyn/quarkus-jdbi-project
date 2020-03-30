@@ -51,6 +51,7 @@ public class MyProducer {
                             new ProducerRecord<String, String>(
                                     "my-topic", "xyz", message));
                 }, error -> {
+                    // nothing for now
                 }, () -> {
                     System.out.println("Closing producer");
                     producer.close();
