@@ -4,6 +4,20 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
+# Starting Postgres datqbase
+Change directory to ./docker/postgres
+
+Start docker-compose: 
+```text
+docker-compose up
+```
+
+You should see confirmation that postgres started
+
+# Crete Fruit ( sample entity ) table inside the postgres
+
+
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
