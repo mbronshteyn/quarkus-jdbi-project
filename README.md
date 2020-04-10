@@ -16,7 +16,20 @@ You should see confirmation that postgres started
 
 # Crete Fruit ( sample entity ) table inside the postgres
 
+Connect to `adminer` : `http://localhost:18080/`
 
+Connect to Postgres database using `postgres`/`example` as `user`/`password` credentials
+
+Create `fruit` database.
+
+Create `fruit` table:
+
+```text
+Column	Type	Comment
+uuid	character varying(256)	
+name	character varying	
+description	character varying	
+```
 
 ## Running the application in dev mode
 
