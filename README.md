@@ -30,6 +30,10 @@ uuid	character varying(256)
 name	character varying	
 description	character varying	
 ```
+# Import postman collection into Postman
+Postman collection is located in `./postman` directory
+
+# After that you can start application
 
 ## Running the application in dev mode
 
@@ -37,6 +41,10 @@ You can run your application in dev mode that enables live coding using:
 ```
 ./mvnw quarkus:dev
 ```
+
+# Using appliction
+Open up collection in Postman. 
+
 
 ## Packaging and running the application
 
