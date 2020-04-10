@@ -45,6 +45,9 @@ You can run your application in dev mode that enables live coding using:
 # Using appliction
 Open up collection in Postman. 
 
+It has a number of CRUD methods defined along with pre-defined `POST`
+
+You should it be able to examine application rom that point.
 
 ## Packaging and running the application
 
