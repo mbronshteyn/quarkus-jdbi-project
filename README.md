@@ -35,7 +35,7 @@ Postman collection is located in `./postman` directory
 
 # After that you can start application
 
-## Running the application in dev mode
+## Running application in dev mode
 
 You can run your application in dev mode that enables live coding using:
 ```
