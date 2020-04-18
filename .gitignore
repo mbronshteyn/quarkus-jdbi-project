@@ -42,3 +42,5 @@ docker/postgres/data
 /docker/kafka/zk-single-kafka-single/kafka1/
 /docker/kafka/zk-single-kafka-single/zoo1/
 /docker/kafka/zk-single-kafka-single/
+
+/docker/kafka/multi-broker/zk-multiple-kafka-multiple/
