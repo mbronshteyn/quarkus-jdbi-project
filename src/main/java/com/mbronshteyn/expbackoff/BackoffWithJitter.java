@@ -1,7 +1,7 @@
 package com.mbronshteyn.expbackoff;
 
 import com.google.common.flogger.FluentLogger;
-import io.github.resilience4j.retry.IntervalFunction;
+import io.github.resilience4j.core.IntervalFunction;
 import io.github.resilience4j.retry.Retry;
 import io.github.resilience4j.retry.RetryConfig;
 

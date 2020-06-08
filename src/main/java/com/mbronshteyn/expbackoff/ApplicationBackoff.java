@@ -1,6 +1,6 @@
 package com.mbronshteyn.expbackoff;
 
-import io.github.resilience4j.retry.IntervalFunction;
+import io.github.resilience4j.core.IntervalFunction;
 
 import java.util.function.Function;
 
