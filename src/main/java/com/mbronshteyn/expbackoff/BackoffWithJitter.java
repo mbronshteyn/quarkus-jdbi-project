@@ -19,10 +19,24 @@ public class BackoffWithJitter {
     static final Integer MAX_RETRIES = 4;
     private static final int NUM_CONCURRENT_CLIENTS = 8;
     private final FluentLogger logger = FluentLogger.forEnclosingClass();
+
     @Inject
     private ChannelService service;
 
     public Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn) {
+        RetryConfig retryConfig = RetryConfig.custom()
+                .maxAttempts(MAX_RETRIES)
+                .intervalFunction(intervalFn)
+                .retryExceptions(ChannelServiceException.class)
+                .build();
+        Retry retry = Retry.of("message", retryConfig);
+        return Retry.decorateFunction(retry, msg -> {
+            logger.atInfo().log("Invoked at %s", LocalDateTime.now());
+            return service.sendOnChannel(msg);
+        });
+    }
+
+    public Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn, ChannelService service) {
         RetryConfig retryConfig = RetryConfig.custom()
                 .maxAttempts(MAX_RETRIES)
                 .intervalFunction(intervalFn)
