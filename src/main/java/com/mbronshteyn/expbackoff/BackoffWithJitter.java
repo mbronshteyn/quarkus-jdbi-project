@@ -40,6 +40,14 @@ public class BackoffWithJitter {
         });
     }
 
+    /**
+     * TODO: convenience method to use in test static main code
+     * we should not need it as we would use injected class
+     *
+     * @param intervalFn
+     * @param service
+     * @return
+     */
     public Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn, ChannelService service) {
         return getFunction(intervalFn, service);
     }
