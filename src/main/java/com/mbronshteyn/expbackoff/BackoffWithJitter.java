@@ -42,7 +42,7 @@ public class BackoffWithJitter {
                     .intervalFunction(intervalFn)
                     .retryExceptions(ChannelServiceException.class)
                     .build();
-    Retry retry = Retry.of("message", retryConfig);
+    Retry retry = Retry.of("sendOnChannelRetry", retryConfig);
     return Retry.decorateFunction(
             retry,
             msg -> {
