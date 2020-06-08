@@ -13,11 +13,14 @@ public class ApplicationBackoff {
         Long INITIAL_INTERVAL = 1000L;
         Double MULTIPLIER = 2.0D;
 
+        Integer retries = 3;
+
+
         ChannelService service = new ChannelService();
         BackoffWithJitter backoffWithJitter = new BackoffWithJitter();
 
         IntervalFunction intervalFn = ofExponentialBackoff(INITIAL_INTERVAL, MULTIPLIER);
-        Function<String, String> channelFn = backoffWithJitter.getRetryableChannelFn(intervalFn, service);
+        Function<String, String> channelFn = backoffWithJitter.getRetryableChannelFn(intervalFn, retries, service);
 
         channelFn.apply("Hello World!!!!");
 

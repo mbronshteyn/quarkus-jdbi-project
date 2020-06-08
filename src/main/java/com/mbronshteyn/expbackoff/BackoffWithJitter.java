@@ -13,31 +13,41 @@ import java.util.function.Function;
 @ApplicationScoped
 public class BackoffWithJitter {
 
-    static final Long INITIAL_INTERVAL = 1000L;
-    static final Double MULTIPLIER = 2.0D;
-    static final Double RANDOMIZATION_FACTOR = 0.6D;
-    static final Integer MAX_RETRIES = 4;
-    private static final int NUM_CONCURRENT_CLIENTS = 8;
-    private final FluentLogger logger = FluentLogger.forEnclosingClass();
+  static final Long INITIAL_INTERVAL = 1000L;
+  static final Double MULTIPLIER = 2.0D;
+  static final Double RANDOMIZATION_FACTOR = 0.6D;
+  static final Integer MAX_RETRIES = 10;
+  private static final int NUM_CONCURRENT_CLIENTS = 8;
+  private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    @Inject
-    private ChannelService service;
+  @Inject
+  private ChannelService service;
 
-    public Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn) {
-        return getRetryableChannelFn(intervalFn, service);
+  public Function<String, String> getRetryableChannelFn(
+          IntervalFunction intervalFn, Integer retries) {
+    return getRetryableChannelFn(intervalFn, retries, service);
+  }
+
+  protected Function<String, String> getRetryableChannelFn(
+          IntervalFunction intervalFn, Integer retries, ChannelService service) {
+
+    // check if we are exceeding the max number of retries
+    if (retries > MAX_RETRIES) {
+      retries = MAX_RETRIES;
     }
 
-    protected Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn, ChannelService service) {
-        RetryConfig retryConfig = RetryConfig.custom()
-                .maxAttempts(MAX_RETRIES)
-                .intervalFunction(intervalFn)
-                .retryExceptions(ChannelServiceException.class)
-                .build();
-        Retry retry = Retry.of("message", retryConfig);
-        return Retry.decorateFunction(retry, msg -> {
-            logger.atInfo().log("Invoked at %s", LocalDateTime.now());
-            return service.sendOnChannel(msg);
-        });
-    }
+    RetryConfig retryConfig =
+            RetryConfig.custom()
+                    .maxAttempts(retries)
+                    .intervalFunction(intervalFn)
+                    .retryExceptions(ChannelServiceException.class)
+                    .build();
+    Retry retry = Retry.of("message", retryConfig);
+    return Retry.decorateFunction(
+            retry,
+            msg -> {
+              logger.atInfo().log("Invoked at %s", LocalDateTime.now());
+              return service.sendOnChannel(msg);
+            });
+  }
 }
-
