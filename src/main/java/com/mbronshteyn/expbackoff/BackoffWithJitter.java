@@ -24,10 +24,10 @@ public class BackoffWithJitter {
     private ChannelService service;
 
     public Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn) {
-        return getFunction(intervalFn, service);
+        return getRetryableChannelFn(intervalFn, service);
     }
 
-    private Function<String, String> getFunction(IntervalFunction intervalFn, ChannelService service) {
+    protected Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn, ChannelService service) {
         RetryConfig retryConfig = RetryConfig.custom()
                 .maxAttempts(MAX_RETRIES)
                 .intervalFunction(intervalFn)
@@ -38,18 +38,6 @@ public class BackoffWithJitter {
             logger.atInfo().log("Invoked at %s", LocalDateTime.now());
             return service.sendOnChannel(msg);
         });
-    }
-
-    /**
-     * TODO: convenience method to use in test static main code
-     * we should not need it as we would use injected class
-     *
-     * @param intervalFn
-     * @param service
-     * @return
-     */
-    public Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn, ChannelService service) {
-        return getFunction(intervalFn, service);
     }
 }
 
