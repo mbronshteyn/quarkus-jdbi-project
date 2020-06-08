@@ -24,6 +24,10 @@ public class BackoffWithJitter {
     private ChannelService service;
 
     public Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn) {
+        return getFunction(intervalFn, service);
+    }
+
+    private Function<String, String> getFunction(IntervalFunction intervalFn, ChannelService service) {
         RetryConfig retryConfig = RetryConfig.custom()
                 .maxAttempts(MAX_RETRIES)
                 .intervalFunction(intervalFn)
@@ -37,16 +41,7 @@ public class BackoffWithJitter {
     }
 
     public Function<String, String> getRetryableChannelFn(IntervalFunction intervalFn, ChannelService service) {
-        RetryConfig retryConfig = RetryConfig.custom()
-                .maxAttempts(MAX_RETRIES)
-                .intervalFunction(intervalFn)
-                .retryExceptions(ChannelServiceException.class)
-                .build();
-        Retry retry = Retry.of("message", retryConfig);
-        return Retry.decorateFunction(retry, msg -> {
-            logger.atInfo().log("Invoked at %s", LocalDateTime.now());
-            return service.sendOnChannel(msg);
-        });
+        return getFunction(intervalFn, service);
     }
 }
 
