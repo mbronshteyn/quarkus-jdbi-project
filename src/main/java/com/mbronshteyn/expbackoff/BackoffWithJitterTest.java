@@ -41,11 +41,11 @@ public class BackoffWithJitterTest {
     @Test
     public void whenRetryExponentialBackoff_thenRetriedConfiguredNoOfTimes() {
         IntervalFunction intervalFn = ofExponentialBackoff(INITIAL_INTERVAL, MULTIPLIER);
-        Function<String, String> pingPongFn = getRetryableChannelFn(intervalFn);
+        Function<String, String> channelFn = getRetryableChannelFn(intervalFn);
 
         when(service.call(anyString())).thenThrow(ChannelServiceException.class);
         try {
-            pingPongFn.apply("Hello");
+            channelFn.apply("Hello");
         } catch (ChannelServiceException e) {
             verify(service, times(MAX_RETRIES)).call(anyString());
         }
@@ -64,9 +64,9 @@ public class BackoffWithJitterTest {
     }
 
     private void test(IntervalFunction intervalFn) throws InterruptedException {
-        Function<String, String> pingPongFn = getRetryableChannelFn(intervalFn);
+        Function<String, String> channelFn = getRetryableChannelFn(intervalFn);
         ExecutorService executors = newFixedThreadPool(NUM_CONCURRENT_CLIENTS);
-        List<Callable<String>> tasks = nCopies(NUM_CONCURRENT_CLIENTS, () -> pingPongFn.apply("Hello"));
+        List<Callable<String>> tasks = nCopies(NUM_CONCURRENT_CLIENTS, () -> channelFn.apply("Hello"));
 
         when(service.call(anyString())).thenThrow(ChannelServiceException.class);
 
