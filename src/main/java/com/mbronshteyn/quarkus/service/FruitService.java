@@ -1,20 +1,30 @@
 package com.mbronshteyn.quarkus.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.flogger.FluentLogger;
 import com.mbronshteyn.quarkus.bl.DatabaseConnector;
 import com.mbronshteyn.quarkus.dao.FruitDao;
 import com.mbronshteyn.quarkus.entity.Fruit;
+import com.mbronshteyn.quarkus.restclient.SlackService;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.json.Json;
 import java.util.List;
 
 @ApplicationScoped
 public class FruitService {
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
     @Inject
     DatabaseConnector databaseConnector;
+
+    @Inject
+    @RestClient
+    SlackService slackService;
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -32,9 +42,16 @@ public class FruitService {
 
     public Integer add(Fruit fruit) throws Exception {
 
-        logger.atInfo().log("Add Fruit: " + fruit);
+        logger.atInfo().log("Add Fruit: %s", fruit);
 
         Jdbi jdbi = databaseConnector.getJdbi();
+
+        String jsonFruit = Json.createObjectBuilder()
+                .add("text", fruit.toString())
+                .build()
+                .toString();
+
+        slackService.postMessage(jsonFruit);
 
         /**
          * A convenience method which opens an extension of the given type,
