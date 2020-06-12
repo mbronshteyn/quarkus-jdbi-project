@@ -51,6 +51,7 @@ public class FruitService {
                 .build()
                 .toString();
 
+        // post message to slack
         slackService.postMessage(jsonFruit);
 
         /**

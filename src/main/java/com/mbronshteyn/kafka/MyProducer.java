@@ -4,6 +4,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Properties;
 
@@ -43,7 +44,7 @@ public class MyProducer {
 
         System.out.println("Current thread: " + Thread.currentThread().getId());
         Mono.just("message from mono")
-                //              .publishOn(Schedulers.single())  uncomment to run on separate thread
+                .publishOn(Schedulers.elastic())
                 .subscribe(
                         message -> {
                             System.out.println("Sending " + message);
