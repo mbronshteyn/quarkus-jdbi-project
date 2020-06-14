@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ReactiveSandbox {
   public static void main(String[] args) {
     Flux.range(1, 10)
-            .parallel(2)
+            .parallel(8)
             .runOn(Schedulers.parallel())
             .subscribe(i -> System.out.println(Thread.currentThread().getName() + " -> " + i));
 
