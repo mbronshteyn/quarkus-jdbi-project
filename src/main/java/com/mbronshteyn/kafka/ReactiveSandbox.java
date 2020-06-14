@@ -7,7 +7,9 @@ import reactor.core.scheduler.Schedulers;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ReactiveSandbox {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
+
+    System.out.println("Checkpoint #1 on " + Thread.currentThread().getName() + "\n\n");
     Flux.range(1, 10)
             .parallel(8)
             .runOn(Schedulers.parallel())
@@ -25,6 +27,8 @@ public class ReactiveSandbox {
     //              () ->  System.out.println( "Completed" ) //OnCompleted
     //      );
 
+
+    System.out.println("Checkpoint #2 on " + Thread.currentThread().getName() + "\n\n");
     Observable<Integer> vals = Observable.range(1, 10);
 
     vals.flatMap(
@@ -33,6 +37,8 @@ public class ReactiveSandbox {
                             .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
                             .map(ReactiveSandbox::intenseCalculation))
             .subscribe();
+
+    System.out.println("Checkpoint #3 on " + Thread.currentThread().getName() + "\n\n");
   }
 
   // process the value
