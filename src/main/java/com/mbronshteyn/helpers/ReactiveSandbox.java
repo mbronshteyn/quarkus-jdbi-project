@@ -1,4 +1,4 @@
-package com.mbronshteyn.kafka;
+package com.mbronshteyn.helpers;
 
 import io.reactivex.Observable;
 import reactor.core.publisher.Flux;
@@ -14,18 +14,6 @@ public class ReactiveSandbox {
             .parallel(8)
             .runOn(Schedulers.parallel())
             .subscribe(i -> System.out.println(Thread.currentThread().getName() + " -> " + i));
-
-    // sequental procssing on single thread
-    //      String[] letters = {"a", "b", "c", "d", "e", "f", "g"};
-    //      Observable<String> observable = Observable.fromArray(letters);
-    //      observable.subscribe(
-    //              i ->  {
-    //                System.out.println("Thread " + Thread.currentThread().getId());
-    //                System.out.println( "Process and commit transaction" );
-    //              },  //OnNext
-    //              ( i ) -> System.out.println( "Rollback the transaction"), //OnError
-    //              () ->  System.out.println( "Completed" ) //OnCompleted
-    //      );
 
 
     System.out.println("Checkpoint #2 on " + Thread.currentThread().getName() + "\n\n");
