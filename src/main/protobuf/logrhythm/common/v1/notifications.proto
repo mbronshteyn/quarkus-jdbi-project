@@ -34,7 +34,7 @@ message UnaryNoticeResponse {
     Notice notice = 2;
 }
 
-enum Channel {
+enum ChannelType {
   UNSPECIFIED = 0;
   EMAIL = 1;
   SMS = 2;
@@ -53,7 +53,7 @@ message Notice {
     // if one or more Audience are present, overrides category/subcategory routing.
     Audience audience = 5;
 
-    Channel channel = 6; // optional
+    ChannelType channel = 6; // optional
 
     NoticeStatus notice_status = 7; // omitted for CreateNotice
 

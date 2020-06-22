@@ -1,0 +1,128 @@
+syntax = "proto3";
+
+package logrhythm.common.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "logrhythm/common/v1/notifications.proto";
+
+option java_multiple_files = true;
+option java_package = "com.logrhythm.core.api.v1.grpc";
+
+/*
+service __serviceClass__Service {
+  rpc CreateEntityClass (__entityClass__) returns (Unary__entityClass__Response) {
+  }
+  rpc GetEntityClass (logrhythm.common.v1.Identifier) returns (Unary__entityClass__Response) {
+  }
+  rpc ReplaceEntityClass (__entityClass__) returns (Unary__entityClass__Response) {
+  }
+  rpc DeleteEntityClass (logrhythm.common.v1.Identifier) returns (google.protobuf.Empty)  {
+  }
+  rpc FindEntityClassByAgeRange (__entityClass__ByAgeRangeRequest) returns (SeekPage__entityClass__Response)  {
+  }
+
+  rpc FindEntityClassByNamePattern (__entityClass__ByNamePatternRequest) returns (SeekPage__entityClass__Response)  {
+  }
+}
+
+*/
+
+
+service NotificationConfigService {
+    rpc CreateConfig (NotificationConfig) returns (UnaryConfigResponse) {}
+    rpc ReplaceConfig (NotificationConfig) returns (UnaryConfigResponse) {}
+    rpc GetConfig (NotificationConfig) returns (UnaryConfigResponse) {}
+    rpc DeleteConfig (DeleteConfigRequest) returns (UnaryDeleteConfigResponse) {}
+}
+
+message UnaryConfigResponse {
+    NotificationConfig config = 1;
+}
+
+message DeleteConfigRequest {
+    string config_id = 1;
+}
+
+message UnaryDeleteConfigResponse {
+    // ???
+}
+
+message NotificationConfig {
+    string config_id = 1;
+    string tenant_id = 2;
+    string service_name = 3;
+    string category = 4;
+
+    string subcategory = 5;
+    string user_id = 6;
+    string channel = 7;
+    string destination = 8;
+}
+
+
+// maybe these go in another proto3 service def'n
+service ChannelConfigService {
+    rpc CreateChannelConfig (ChannelConfig) returns (UnaryChannelConfigResponse) {}
+    rpc UpdateChannelConfig (ChannelConfig) returns (UnaryChannelConfigResponse) {}
+    rpc DeleteChannelConfig (ChannelConfig) returns (google.protobuf.Empty) {}
+    rpc ListChannelConfigs (logrhythm.common.v1.Identifier) returns (ListChannelConfigsResponse) {}
+    rpc ListChannelTypes (logrhythm.common.v1.Identifier) returns (ListChannelTypesResponse) {}
+}
+
+message UnaryChannelConfigResponse {
+    logrhythm.common.v1.UnaryResponseHeader info = 1;
+    ChannelConfig channel_config = 2;
+}
+
+message ListChannelConfigsResponse {
+    logrhythm.common.v1.UnaryResponseHeader info = 1;
+    repeated ChannelConfig channel_configs = 2;
+}
+
+message ListChannelTypesResponse {
+    logrhythm.common.v1.UnaryResponseHeader info = 1;
+    repeated ChannelType channel_types = 2;
+}
+
+message ChannelConfig {
+    logrhythm.common.v1.Identifier id = 1;
+    ChannelType channel_type = 2;
+    oneof config_properties {
+        EmailChannelConfig email_channel_config = 3;
+        SmsChannelConfig sms_channel_config = 4;
+        SlackChannelConfig slack_channel_config = 5;
+        PagerDutyChannelConfig pager_duty_channel_config = 6;
+    }
+
+    message EmailChannelConfig {
+        string smtp_server = 1;
+        int32 port = 2;
+
+        // also include authentication details
+
+    }
+
+    message SmsChannelConfig {
+        // sms gateway configuration parameters.
+        // Note: these are initial guess of the parameters required to configure an SMS gateway.
+        // These are subject to change.
+        string hostname = 1;
+        string id = 2;
+        int32 port = 3;
+        string program_name = 4;
+        string to_param_name = 5;
+        string text_param_name = 6;
+    }
+
+    message SlackChannelConfig {
+        string slack_channel = 1;
+
+        // todo
+    }
+
+    message PagerDutyChannelConfig {
+        // ???
+    }
+
+}
