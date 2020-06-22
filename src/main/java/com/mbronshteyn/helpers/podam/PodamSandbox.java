@@ -20,6 +20,7 @@ public class PodamSandbox {
 
     String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(myPojo);
 
+    System.out.println("\n\nFormatted json: ");
     System.out.println(jsonString);
   }
 }
