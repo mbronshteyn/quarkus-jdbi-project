@@ -17,6 +17,12 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus-plugin.version>1.2.1.Final</quarkus-plugin.version>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
+
+    <protoc-jar-maven-plugin.version>3.11.1</protoc-jar-maven-plugin.version>
+    <io-grpc.version>1.30.0</io-grpc.version>
+    <quarkus.grpc.version>1.5.1.Final</quarkus.grpc.version>
+
+
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -35,6 +41,23 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    <!-- grpc / proto3 dependencies -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-grpc</artifactId>
+      <version>${quarkus.grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-protobuf</artifactId>
+      <version>${io-grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-stub</artifactId>
+      <version>${io-grpc.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
@@ -195,6 +218,44 @@
           </systemProperties>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>com.github.os72</groupId>
+        <artifactId>protoc-jar-maven-plugin</artifactId>
+        <version>${protoc-jar-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>core-proto</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <protocArtifact>com.google.protobuf:protoc:${protoc-jar-maven-plugin.version}</protocArtifact>
+              <addProtoSources>all</addProtoSources>
+              <includeMavenTypes>direct</includeMavenTypes>
+              <includeStdTypes>true</includeStdTypes>
+              <inputDirectories>
+                <include>${project.basedir}/src/main/protobuf</include>
+              </inputDirectories>
+              <includeDirectories>
+                <include>${project.basedir}/src/main/protobuf</include>
+              </includeDirectories>
+              <outputTargets>
+                <outputTarget>
+                  <type>java</type>
+                </outputTarget>
+                <outputTarget>
+                  <type>grpc-java</type>
+                  <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.30.0</pluginArtifact>
+                </outputTarget>
+              </outputTargets>
+            </configuration>
+          </execution>
+        </executions>
+
+      </plugin>
+
     </plugins>
   </build>
   <profiles>
