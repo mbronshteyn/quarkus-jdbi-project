@@ -1,8 +1,6 @@
 package com.mbronshteyn.helpers;
 
-import io.reactivex.Observable;
-import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
+import io.reactivex.Flowable;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -10,20 +8,24 @@ public class ReactiveSandbox {
   public static void main(String[] args) throws Exception {
 
     System.out.println("Checkpoint #1 on " + Thread.currentThread().getName() + "\n\n");
-    Flux.range(1, 10)
-            .parallel(8)
-            .runOn(Schedulers.parallel())
-            .subscribe(i -> intenseCalculation(i));
+//    Flux.range(1, 10)
+//            .parallel(8)
+//            .runOn(Schedulers.parallel())
+//            .subscribe(i -> intenseCalculation(i));
 
     System.out.println("Checkpoint #2 on " + Thread.currentThread().getName() + "\n\n");
 
-    Observable.just(1)
-            .flatMap(
-                    e ->
-                            Observable.just(e)
-                                    .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
-                                    .map(ReactiveSandbox::intenseCalculation))
-            .subscribe();
+//    Observable.just(1)
+//            .flatMap(
+//                    e ->
+//                            Observable.just(e)
+//                                    .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
+//                                    .map(ReactiveSandbox::intenseCalculation))
+//            .subscribe();
+
+    Flowable.just( 18 )
+            .subscribeOn( io.reactivex.schedulers.Schedulers.computation() )
+            .subscribe( i -> intenseCalculation( i ));
 
     System.out.println("Checkpoint #3 on " + Thread.currentThread().getName() + "\n\n");
 
