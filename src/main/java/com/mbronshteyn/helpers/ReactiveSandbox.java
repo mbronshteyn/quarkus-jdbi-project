@@ -13,27 +13,28 @@ public class ReactiveSandbox {
     Flux.range(1, 10)
             .parallel(8)
             .runOn(Schedulers.parallel())
-            .subscribe(i -> System.out.println(Thread.currentThread().getName() + " -> " + i));
-
+            .subscribe(i -> intenseCalculation(i));
 
     System.out.println("Checkpoint #2 on " + Thread.currentThread().getName() + "\n\n");
-    Observable<Integer> vals = Observable.range(1, 10);
 
-    vals.flatMap(
-            val ->
-                    Observable.just(val)
-                            .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
-                            .map(ReactiveSandbox::intenseCalculation))
+    Observable.just(1)
+            .flatMap(
+                    e ->
+                            Observable.just(e)
+                                    .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
+                                    .map(ReactiveSandbox::intenseCalculation))
             .subscribe();
 
     System.out.println("Checkpoint #3 on " + Thread.currentThread().getName() + "\n\n");
+
+    Thread.sleep(10000);
   }
 
   // process the value
   public static int intenseCalculation(int i) {
     try {
       System.out.println("Calculating " + i + " on " + Thread.currentThread().getName());
-      Thread.sleep(randInt(1000, 5000));
+      Thread.sleep(1000);
       return i;
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
