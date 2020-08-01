@@ -4,6 +4,7 @@ import com.google.common.flogger.FluentLogger;
 import com.mbronshteyn.quarkus.bl.DatabaseConnector;
 import com.mbronshteyn.quarkus.dao.FruitDao;
 import com.mbronshteyn.quarkus.entity.Fruit;
+import com.mbronshteyn.quarkus.velocity.TemplateEngine;
 import org.jdbi.v3.core.Jdbi;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -15,6 +16,9 @@ public class FruitService {
 
     @Inject
     DatabaseConnector databaseConnector;
+
+    @Inject
+    TemplateEngine templateEngine;
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
