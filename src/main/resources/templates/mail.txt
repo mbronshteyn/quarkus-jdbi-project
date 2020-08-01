@@ -1,0 +1,5 @@
+Dear {firstName} {lastName}
+
+Sending Email Using Notification service Smtp Email + Velocity Template from {location} location.
+
+Thanks
