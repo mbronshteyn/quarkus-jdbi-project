@@ -23,13 +23,19 @@ public class ReactiveSandbox {
 //                                    .map(ReactiveSandbox::intenseCalculation))
 //            .subscribe();
 
-    Flowable.just( 18 )
-            .subscribeOn( io.reactivex.schedulers.Schedulers.computation() )
-            .subscribe( i -> intenseCalculation( i ));
+    Flowable.just(getRecord())
+            .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
+            .subscribe(ReactiveSandbox::intenseCalculation);
 
     System.out.println("Checkpoint #3 on " + Thread.currentThread().getName() + "\n\n");
 
+
     Thread.sleep(10000);
+  }
+
+  public static int getRecord() {
+    System.out.println("Insidie getRecord: thread name: " + Thread.currentThread().getName());
+    return 18;
   }
 
   // process the value
