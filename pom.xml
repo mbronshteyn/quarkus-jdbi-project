@@ -176,7 +176,18 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-qute</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-mailer</artifactId>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/io.smallrye.reactive/mutiny -->
+    <dependency>
+      <groupId>io.smallrye.reactive</groupId>
+      <artifactId>mutiny</artifactId>
+      <version>0.7.0</version>
+    </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
